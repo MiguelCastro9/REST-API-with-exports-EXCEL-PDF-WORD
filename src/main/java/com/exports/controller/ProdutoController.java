@@ -57,7 +57,7 @@ public class ProdutoController {
         return produtos;
     }
 
-    @GetMapping("/exportExel")
+    @GetMapping("/exportExcel")
     public ResponseEntity exportExel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=Produtos.xlsx");

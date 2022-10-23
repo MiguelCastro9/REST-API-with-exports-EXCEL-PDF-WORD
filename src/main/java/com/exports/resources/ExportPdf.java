@@ -28,7 +28,7 @@ public class ExportPdf {
         Document documento = new Document();
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
 
-        documento.setPageSize(PageSize.A1);
+        documento.setPageSize(PageSize.A4);
 
         try {
 
