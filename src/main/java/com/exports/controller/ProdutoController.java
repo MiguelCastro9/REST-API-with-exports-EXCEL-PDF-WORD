@@ -2,12 +2,19 @@ package com.exports.controller;
 
 import com.exports.model.Produto;
 import com.exports.resources.ExportExcel;
+import com.exports.resources.ExportPdf;
+import com.itextpdf.text.BadElementException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.IOUtils;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,11 +59,22 @@ public class ProdutoController {
     }
     
     @GetMapping("/exportExel")
-    public void exportExel(HttpServletResponse response) throws IOException {
+    public ResponseEntity exportExel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=MPE Tech-produtos.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=Produtos.xlsx");
         ByteArrayInputStream stream = ExportExcel.produtosExportExel(listProdutos());
         IOUtils.copy(stream, response.getOutputStream());
+        
+        return ResponseEntity.ok().body(this);
     }
+    
+    @GetMapping("/exportPdf")
+    public ResponseEntity<InputStreamResource> exportPdf(ModelMap model) throws IOException, BadElementException {
+        model.addAttribute("produtos", listProdutos());
+        ByteArrayInputStream bais = ExportPdf.produtosExportPdf(listProdutos());
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(bais));
+    }
+    
     
 }
