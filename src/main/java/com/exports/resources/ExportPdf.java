@@ -32,7 +32,7 @@ public class ExportPdf {
 
         try {
 
-            PdfPTable table = new PdfPTable(13);
+            PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(80);
 
             Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
